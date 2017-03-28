@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.report.constant.ReportType;
-import com.report.generate.GenerateReport;
+import com.report.generator.GenerateReport;
 
 public class RunGenerateReport {
 

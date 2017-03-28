@@ -2,6 +2,7 @@ package com.report.util;
 
 import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -25,12 +26,12 @@ public class ExcelUtils {
     return row.createCell(columnIndex);
 	}
 	
-	public static Cell getNextColumn(Cell cell, Sheet sheet){
-		return getCell(cell.getRowIndex(), cell.getColumnIndex()+1, sheet);
+	public static Cell getNextColumn(Cell cell){
+		return getCell(cell.getRowIndex(), cell.getColumnIndex()+1, cell.getSheet());
 	}
 	
-	public static Cell getNextRow(Cell cell, Sheet sheet){
-		return getCell(cell.getRowIndex()+1, cell.getColumnIndex(), sheet);
+	public static Cell getNextRow(Cell cell){
+		return getCell(cell.getRowIndex()+1, cell.getColumnIndex(), cell.getSheet());
 	}
 	
 	public static void mergeCell(Sheet sheet, int rowIndex, int columnIndexForm, int columnIndexTo){
@@ -41,4 +42,11 @@ public class ExcelUtils {
 		return sheet.getLastRowNum()+1;
 	}
 	
+	public static void createDummyColumn(Cell startCell, CellStyle cellStlye, int length){
+		Cell dummyCell = startCell;
+		for(int i=1;i<=length;i++){
+			dummyCell = ExcelUtils.getNextColumn(dummyCell);
+			dummyCell.setCellStyle(cellStlye);
+		}	
+	}
 }

@@ -1,4 +1,4 @@
-package com.report.generate;
+package com.report.generator;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.report.constant.ReportType;
-import com.report.rpt.ReportBase;
 
 
 public class GenerateReport {
@@ -16,10 +15,10 @@ public class GenerateReport {
 		String filePath = null;
 		Workbook book = null;
 		try {
-			ReportBase report = getReport(pReportType);
-			if(report!=null){
-				filePath = report.getFilePath();
-				book = report.getWorkbook();
+			ReportGenerator reportGenerator = getReport(pReportType);
+			if(reportGenerator!=null){
+				filePath = reportGenerator.getFilePath();
+				book = reportGenerator.getWorkbook();
 				book.write(new FileOutputStream(filePath));
 			}else{
 				System.out.println("ReportType Not Found");
@@ -41,10 +40,10 @@ public class GenerateReport {
 		return filePath;
 	}
 	
-	public ReportBase getReport(ReportType pReportType){
+	public ReportGenerator getReport(ReportType pReportType){
 		for(ReportType reportType:ReportType.values()){
 			if(reportType.getId() == pReportType.getId()){
-				return reportType.getReportBase();
+				return reportType.getReportGenerator();
 			}
 		}
 		return null;
