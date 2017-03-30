@@ -12,7 +12,7 @@ import com.report.util.ExcelUtils;
 import com.report.util.StyleUtils;
 import com.report.util.Utils;
 
-public class IvnAdvRptSitSourceSub3 implements ReportSource {
+public class IvnAdvRptSitSub3Source implements ReportSource {
 	
 	@Override
 	public InvAdvRptSitDAO getDAOobject() {
@@ -20,34 +20,32 @@ public class IvnAdvRptSitSourceSub3 implements ReportSource {
 	}
 	
 	@Override
-	public void createHeader(Sheet sheet, int startRowNum){
-		int headerRowNum = startRowNum+1;
+	public void createHeader(Sheet sheet, String startExcelColumn,int startExcelRow){
 		CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
-    Cell headerColA = ExcelUtils.getCell("A"+headerRowNum, sheet);
+    Cell headerColA = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
     headerColA.setCellStyle(allBorder);
     headerColA.setCellValue("Zone ID");
     
-    Cell headerColB = ExcelUtils.getCell("B"+headerRowNum, sheet);
+    Cell headerColB = ExcelUtils.getNextColumn(headerColA);
     headerColB.setCellStyle(allBorder);
     headerColB.setCellValue("Area ID");
     
-    Cell headerColC = ExcelUtils.getCell("C"+headerRowNum, sheet);
+    Cell headerColC = ExcelUtils.getNextColumn(headerColB);
     headerColC.setCellStyle(allBorder);
     headerColC.setCellValue("Code");
     
-    Cell headerColD = ExcelUtils.getCell("D"+headerRowNum, sheet);
+    Cell headerColD = ExcelUtils.getNextColumn(headerColC);
     headerColD.setCellStyle(allBorder);
     headerColD.setCellValue("Name");
         
 	}
 	
 	@Override
-	public void createBody(Sheet sheet, int startRowNum){
+	public void createBody(Sheet sheet, String startExcelColumn,int startExcelRow){
     List<ChannelModel> channelModels = getDAOobject().getSubReport3Data();
     CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
     
-    String startBodyCellRef ="A"+startRowNum;
-    Cell bodyColA = ExcelUtils.getCell(startBodyCellRef, sheet);
+    Cell bodyColA = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
     Cell bodyColB = ExcelUtils.getNextColumn(bodyColA);
     Cell bodyColC = ExcelUtils.getNextColumn(bodyColB);
     Cell bodyColD = ExcelUtils.getNextColumn(bodyColC);
@@ -78,12 +76,11 @@ public class IvnAdvRptSitSourceSub3 implements ReportSource {
 	}
 	
 	@Override
-	public void createFooter(Sheet sheet, int startRowNum){
+	public void createFooter(Sheet sheet, String startExcelColumn,int startExcelRow){
 		CellStyle allBorderYellow = StyleUtils.allBorderYellow(sheet.getWorkbook().createCellStyle());
 		CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
 		
-		String startFooterCellRef ="A"+startRowNum;
-		Cell footerColA = ExcelUtils.getCell(startFooterCellRef, sheet);
+		Cell footerColA = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
 		footerColA.setCellStyle(allBorder);
 		
 		Cell footerColB = ExcelUtils.getNextColumn(footerColA);

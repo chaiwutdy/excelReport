@@ -6,8 +6,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.report.generator.ReportGenerator;
 import com.report.rpt.source.DummyRptSource;
+import com.report.util.ExcelUtils;
 import com.report.util.Utils;
 
+/**
+ * This class is a ReportGenerator Example.
+ */
 public class DummyRpt implements ReportGenerator{
 
 	@Override
@@ -19,10 +23,12 @@ public class DummyRpt implements ReportGenerator{
 	public Workbook getWorkbook() {
 		Workbook book = new XSSFWorkbook();
 		Sheet sheet = book.createSheet("SheetDummy");
+		System.out.println(sheet.getLeftCol());
 		DummyRptSource dummyRptSource = new DummyRptSource();
-		dummyRptSource.createHeader(sheet,1);
-		dummyRptSource.createBody(sheet,2);
-		dummyRptSource.createFooter(sheet,3);
+		dummyRptSource.createHeader(sheet,"A",1);
+		dummyRptSource.createBody(sheet,"B",2);
+		dummyRptSource.createFooter(sheet,"B",ExcelUtils.getLastRow(sheet)+1);
+		System.out.println(sheet.getLeftCol());
 		return book;
 	}
 

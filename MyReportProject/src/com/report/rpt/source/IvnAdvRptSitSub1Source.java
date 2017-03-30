@@ -12,7 +12,7 @@ import com.report.util.ExcelUtils;
 import com.report.util.StyleUtils;
 import com.report.util.Utils;
 
-public class IvnAdvRptSitSourceSub1 implements ReportSource {
+public class IvnAdvRptSitSub1Source implements ReportSource {
 
 	@Override
 	public InvAdvRptSitDAO getDAOobject() {
@@ -20,26 +20,22 @@ public class IvnAdvRptSitSourceSub1 implements ReportSource {
 	}
 	
 	@Override
-	public void createHeader(Sheet sheet, int startRowNum){
-		String headerCellRef1 = "D"+startRowNum;
-		String headerCellRef2 = "D"+(startRowNum+1);
-		
+	public void createHeader(Sheet sheet, String startExcelColumn,int startExcelRow){
 		CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
-		Cell dummyHeaderColD = ExcelUtils.getCell(headerCellRef1, sheet);
+		Cell dummyHeaderColD = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
 		dummyHeaderColD.setCellStyle(allBorder);
 		
-    Cell headerColD = ExcelUtils.getCell(headerCellRef2, sheet);
+    Cell headerColD = ExcelUtils.getCell(startExcelColumn, (startExcelRow+1), sheet);
     headerColD.setCellStyle(allBorder);
     headerColD.setCellValue("Model");
 	}
 	
 	@Override
-	public void createBody(Sheet sheet, int startRowNum){
+	public void createBody(Sheet sheet, String startExcelColumn,int startExcelRow){
     List<MastCarSeriesModel> mastCarSeriesModels = getDAOobject().getSubReport1Data();
     CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
     
-    String startBodyCellRef ="D"+startRowNum;
-    Cell bodyColD = ExcelUtils.getCell(startBodyCellRef, sheet);
+    Cell bodyColD = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
     for(MastCarSeriesModel mastCarSeriesModel:mastCarSeriesModels){
     	
     	if(mastCarSeriesModels.get(0) != mastCarSeriesModel){
@@ -53,11 +49,10 @@ public class IvnAdvRptSitSourceSub1 implements ReportSource {
 	}
 	
 	@Override
-	public void createFooter(Sheet sheet, int startRowNum) {
+	public void createFooter(Sheet sheet, String startExcelColumn,int startExcelRow) {
 		CellStyle allBorderYellow = StyleUtils.allBorderYellow(sheet.getWorkbook().createCellStyle());
 		
-		String startFooterCellRef ="D"+startRowNum;
-    Cell footerColD = ExcelUtils.getCell(startFooterCellRef, sheet);
+    Cell footerColD = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
     footerColD.setCellStyle(allBorderYellow);
     footerColD.setCellValue("Total");
     /*
