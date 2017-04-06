@@ -27,7 +27,7 @@ public class DummyRpt implements ReportGenerator{
 		DummyRptSource dummyRptSource = new DummyRptSource();
 		dummyRptSource.createHeader(sheet,"A",1);
 		dummyRptSource.createBody(sheet,"B",2);
-		dummyRptSource.createFooter(sheet,"B",ExcelUtils.getLastRow(sheet)+1);
+		dummyRptSource.createFooter(sheet,"B",ExcelUtils.getLastRow(sheet)+1,2);
 		System.out.println(sheet.getLeftCol());
 		return book;
 	}

@@ -42,6 +42,15 @@ public class DummyRptSource implements ReportSource{
 		sheet.autoSizeColumn(bodyColB.getColumnIndex());
 		sheet.autoSizeColumn(bodyColC.getColumnIndex());
 		
+		//
+		Cell bodyColD =  ExcelUtils.getNextColumn(bodyColC);
+		bodyColD.setCellStyle(allBorder);
+		bodyColD.setCellValue(1);
+		
+		Cell bodyColDNextRow =  ExcelUtils.getNextRow(bodyColD);
+		bodyColDNextRow.setCellStyle(allBorder);
+		bodyColDNextRow.setCellValue(1);
+		
 		
 		//----- TEST MERAGE COLUMN -----//
 		Cell cellE1 =  ExcelUtils.getCell("E1",sheet);
@@ -68,9 +77,12 @@ public class DummyRptSource implements ReportSource{
 	}
 
 	@Override
-	public void createFooter(Sheet sheet, String startExcelColumn,int startExcelRow) {
-		Cell bodyColB =  ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
-		bodyColB.setCellValue("Footer");
+	public void createFooter(Sheet sheet, String startExcelColumn,int startExcelRow, int... params) {
+		Cell bodyColC =  ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
+		bodyColC.setCellValue("Total");
+		
+		Cell bodyColD =  ExcelUtils.getNextColumn(bodyColC);
+		bodyColD.setCellFormula("SUM(D"+params[0]+":D"+(startExcelRow-1)+")");
 	}
 	
 }

@@ -26,7 +26,7 @@ public class IvnAdvRptSitMainSource implements ReportSource{
 	}
 	
 	@Override
-	public void createFooter(Sheet sheet, String startExcelColumn,int startExcelRow) {
+	public void createFooter(Sheet sheet, String startExcelColumn,int startExcelRow, int... params) {
 	}
 	
 	public void createCommonHeader(Sheet sheet, String startExcelColumn, int startExcelRow){
@@ -39,35 +39,32 @@ public class IvnAdvRptSitMainSource implements ReportSource{
     Cell headerCell = null;
     String[] months = DateUtils.getShortMonths();
     String[] headers = {"Invoice","Delivery","Remain"};
+    monthCol1 = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
     for(String month:months){
     	
-    	if(months[0].equalsIgnoreCase(month)){
-    		monthCol1 = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
-    		monthCol1.setCellStyle(allBorderAlignCenter);
-    		monthCol1.setCellValue(month);
-    	}else{
+    	if(!months[0].equalsIgnoreCase(month)){
     		monthCol1 = ExcelUtils.getNextColumn(monthCol3);
-    		monthCol1.setCellStyle(allBorderAlignCenter);
-    		monthCol1.setCellValue(month);
     	}
+    	monthCol1.setCellStyle(allBorderAlignCenter);
+  		monthCol1.setCellValue(month);
     	
     	monthCol2 = ExcelUtils.getNextColumn(monthCol1);
     	monthCol2.setCellStyle(allBorder);
       
     	monthCol3 = ExcelUtils.getNextColumn(monthCol2);
     	monthCol3.setCellStyle(allBorder);
+    	
       ExcelUtils.mergeColumn(sheet, monthCol1, monthCol3);
       
       for(String header:headers){
       	if(headers[0].equalsIgnoreCase(header) && months[0].equalsIgnoreCase(month)){
         	headerCell = ExcelUtils.getNextRow(monthCol1);//Utils.getCell(startHeadersCell, sheet);
-        	headerCell.setCellStyle(allBorderAlignCenter);
-        	headerCell.setCellValue(header);
       	}else{
       		headerCell = ExcelUtils.getNextColumn(headerCell);
-        	headerCell.setCellStyle(allBorderAlignCenter);
-        	headerCell.setCellValue(header);
       	}
+      	
+      	headerCell.setCellStyle(allBorderAlignCenter);
+      	headerCell.setCellValue(header);
       }
       
     }

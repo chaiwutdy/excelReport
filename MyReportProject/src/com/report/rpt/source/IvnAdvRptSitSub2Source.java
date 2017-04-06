@@ -46,7 +46,7 @@ public class IvnAdvRptSitSub2Source implements ReportSource {
 	}
 	
 	@Override
-	public void createFooter(Sheet sheet, String startExcelColumn, int startExcelRow){
+	public void createFooter(Sheet sheet, String startExcelColumn, int startExcelRow, int... params){
 		CellStyle allBorderYellow = StyleUtils.allBorderYellow(sheet.getWorkbook().createCellStyle());
 		Cell footerColD = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
 		footerColD.setCellStyle(allBorderYellow);

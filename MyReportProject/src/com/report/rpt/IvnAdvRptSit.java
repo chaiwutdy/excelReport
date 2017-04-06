@@ -34,8 +34,9 @@ public class IvnAdvRptSit implements ReportGenerator{
 		main.createCommonHeader(sheet, "E", startSub1RowNum);
 		IvnAdvRptSitSub1Source sub1 = new IvnAdvRptSitSub1Source();
 		sub1.createHeader(sheet, "D", startSub1RowNum);
-		sub1.createBody(sheet, "D", ExcelUtils.getLastRow(sheet)+1);
-		sub1.createFooter(sheet, "D", ExcelUtils.getLastRow(sheet)+1);
+		int startBodyRowNum = ExcelUtils.getLastRow(sheet)+1;
+		sub1.createBody(sheet, "D", startBodyRowNum);
+		sub1.createFooter(sheet, "D", ExcelUtils.getLastRow(sheet)+1,startBodyRowNum);
 		
 		int startSub2RowNum = ExcelUtils.getLastRow(sheet)+4;
 		main.createCommonHeader(sheet, "E", startSub2RowNum);

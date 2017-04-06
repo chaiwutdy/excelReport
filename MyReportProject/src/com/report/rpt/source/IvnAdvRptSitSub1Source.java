@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import com.report.dao.InvAdvRptSitDAO;
@@ -49,20 +50,20 @@ public class IvnAdvRptSitSub1Source implements ReportSource {
 	}
 	
 	@Override
-	public void createFooter(Sheet sheet, String startExcelColumn,int startExcelRow) {
+	public void createFooter(Sheet sheet, String startExcelColumn, int startExcelRow, int... params) {
 		CellStyle allBorderYellow = StyleUtils.allBorderYellow(sheet.getWorkbook().createCellStyle());
 		
     Cell footerColD = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
     footerColD.setCellStyle(allBorderYellow);
     footerColD.setCellValue("Total");
-    /*
-    Cell footerColE = ExcelUtils.getCell("E"+(ExcelUtils.getLastRow(sheet)), sheet);
+    
+    Cell footerColE = ExcelUtils.getNextColumn(footerColD);
     footerColE.setCellStyle(allBorderYellow);
     footerColE.setCellType(CellType.FORMULA);
-    footerColE.setCellFormula("SUM(E1:E"+(ExcelUtils.getLastRow(sheet)-1)+")");
+    footerColE.setCellFormula("SUM(E"+params[0]+":E"+(startExcelRow-1)+")");
     ExcelUtils.createDummyColumn(footerColE, allBorderYellow, 35);
-    */
-		ExcelUtils.createDummyColumn(footerColD, allBorderYellow, 36);
+    
+		//ExcelUtils.createDummyColumn(footerColD, allBorderYellow, 36);
 	}
 
 	
