@@ -12,14 +12,37 @@ import org.apache.poi.ss.util.CellRangeAddress;
  * Understanding about cell position of Apache Poi.<br>
  * There is difference cell position between Apache Poi And Excel.<br>
  * These are some example about it<br>
- * -----------------------------------<br>
- * Position		Apache Poi		Excel	<br>
- * -----------------------------------<br>
- * Row    				0						1		<br>
- * 				 				1						2		<br>
- * -----------------------------------<br>
- * Column	  			0						A		<br>
- * 								1						B		<br>
+ * <table border = 1>
+ * <tr>
+ * 	<td>Position</td>		
+ * 	<td>Apache Poi</td>		
+ * 	<td>Excel</td>	
+ * </tr>
+ * 
+ * <tr>
+ *  <td>Row</td>		
+ * 	<td>0</td>		
+ * 	<td>1</td>	
+ * </tr>
+ * 
+ * <tr>
+ * 	<td>&nbsp;</td>		
+ * 	<td>1</td>		
+ * 	<td>2</td>	
+ * </tr>
+ * 
+ * <tr>
+ * 	<td>Column</td>		
+ * 	<td>0</td>		
+ * 	<td>A</td>	
+ * </tr>
+ * 
+ * <tr>
+ * 	<td>&nbsp;</td>		
+ * 	<td>1</td>		
+ * 	<td>B</td>		
+ * </tr>
+ * </table>
  * So when refer about cell position this class try to receive parameters and return value with excel position.
  */
 public class ExcelUtils {

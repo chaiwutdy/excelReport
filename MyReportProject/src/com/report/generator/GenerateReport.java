@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.report.constant.ReportType;
+import com.report.rpt.criteria.ReportCriteria;
 
 /**
  * This class to generate reports that implements ReportGenerator class.
@@ -26,10 +27,17 @@ public class GenerateReport {
 		Workbook book = null;
 		try {
 			ReportGenerator reportGenerator = getReport(pReportType);
+			ReportCriteria reportCriteria = getReportCriteria(pReportType);
 			if(reportGenerator!=null){
-				filePath = reportGenerator.getFilePath();
-				book = reportGenerator.getWorkbook();
-				book.write(new FileOutputStream(filePath));
+				filePath = reportGenerator.getFilePath(reportCriteria);
+				
+				if(filePath != null){
+					book = reportGenerator.getWorkbook(reportCriteria);
+					book.write(new FileOutputStream(filePath));
+				}else{
+					LOGGER.info("Please specify filePath");
+				}
+				
 			}else{
 				LOGGER.info("ReportType Not Found");
 			}
@@ -56,10 +64,19 @@ public class GenerateReport {
 	 * @param		pReportType	This is the parameter to find ReportGenerator.
 	 * @return	Object that implements ReportGenerator
 	 */
-	public ReportGenerator getReport(ReportType pReportType){
+	private ReportGenerator getReport(ReportType pReportType){
 		for(ReportType reportType:ReportType.values()){
 			if(reportType.getId() == pReportType.getId()){
 				return reportType.getReportGenerator();
+			}
+		}
+		return null;
+	}
+	
+	private ReportCriteria getReportCriteria(ReportType pReportType){
+		for(ReportType reportType:ReportType.values()){
+			if(reportType.getId() == pReportType.getId()){
+				return reportType.getReportCriteria();
 			}
 		}
 		return null;

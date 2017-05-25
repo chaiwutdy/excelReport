@@ -8,11 +8,12 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import com.report.dao.InvAdvRptSitDAO;
 import com.report.model.ChannelModel;
+import com.report.rpt.criteria.ReportCriteria;
 import com.report.util.ExcelUtils;
 import com.report.util.StyleUtils;
 import com.report.util.Utils;
 
-public class IvnAdvRptSitSub2Source implements ReportSource {
+public class IvnAdvRptSitSub2Source extends IvnAdvRptSitCommonSource implements ReportSource {
 	
 	@Override
 	public InvAdvRptSitDAO getDAOobject() {
@@ -20,7 +21,7 @@ public class IvnAdvRptSitSub2Source implements ReportSource {
 	}
 	
 	@Override
-	public void createHeader(Sheet sheet, String startExcelColumn,int startExcelRow){
+	public void createHeader(Sheet sheet, String startExcelColumn,int startExcelRow, ReportCriteria criteria){
 		CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
 		Cell headerColD = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
 		headerColD.setCellStyle(allBorder);
@@ -28,25 +29,25 @@ public class IvnAdvRptSitSub2Source implements ReportSource {
 	}
 	
 	@Override
-	public void createBody(Sheet sheet, String startExcelColumn, int startExcelRow){
+	public void createBody(Sheet sheet, String startExcelColumn, int startExcelRow, ReportCriteria criteria){
     List<ChannelModel> channelModels = getDAOobject().getSubReport2Data();
     CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
     Cell bodyColD = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
     for(ChannelModel channelModel:channelModels){
     	
-    	if(channelModels.get(0) != channelModel){
-    		bodyColD = ExcelUtils.getNextRow(bodyColD);
-    	}
-    	
     	bodyColD.setCellStyle(allBorder);
     	bodyColD.setCellValue(channelModel.getAreaId());
     	ExcelUtils.createDummyColumn(bodyColD, allBorder, 36);
+    	
+    	if(channelModel != channelModels.get(channelModels.size()-1)){
+    		bodyColD = ExcelUtils.getNextRow(bodyColD);
+    	}
     }
     
 	}
 	
 	@Override
-	public void createFooter(Sheet sheet, String startExcelColumn, int startExcelRow, int... params){
+	public void createFooter(Sheet sheet, String startExcelColumn, int startExcelRow, ReportCriteria criteria, int... params){
 		CellStyle allBorderYellow = StyleUtils.allBorderYellow(sheet.getWorkbook().createCellStyle());
 		Cell footerColD = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
 		footerColD.setCellStyle(allBorderYellow);

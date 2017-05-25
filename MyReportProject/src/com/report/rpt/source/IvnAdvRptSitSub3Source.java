@@ -8,11 +8,12 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import com.report.dao.InvAdvRptSitDAO;
 import com.report.model.ChannelModel;
+import com.report.rpt.criteria.ReportCriteria;
 import com.report.util.ExcelUtils;
 import com.report.util.StyleUtils;
 import com.report.util.Utils;
 
-public class IvnAdvRptSitSub3Source implements ReportSource {
+public class IvnAdvRptSitSub3Source extends IvnAdvRptSitCommonSource implements ReportSource {
 	
 	@Override
 	public InvAdvRptSitDAO getDAOobject() {
@@ -20,7 +21,7 @@ public class IvnAdvRptSitSub3Source implements ReportSource {
 	}
 	
 	@Override
-	public void createHeader(Sheet sheet, String startExcelColumn,int startExcelRow){
+	public void createHeader(Sheet sheet, String startExcelColumn,int startExcelRow, ReportCriteria criteria){
 		CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
     Cell headerColA = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
     headerColA.setCellStyle(allBorder);
@@ -41,7 +42,7 @@ public class IvnAdvRptSitSub3Source implements ReportSource {
 	}
 	
 	@Override
-	public void createBody(Sheet sheet, String startExcelColumn,int startExcelRow){
+	public void createBody(Sheet sheet, String startExcelColumn,int startExcelRow, ReportCriteria criteria){
     List<ChannelModel> channelModels = getDAOobject().getSubReport3Data();
     CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
     
@@ -50,13 +51,6 @@ public class IvnAdvRptSitSub3Source implements ReportSource {
     Cell bodyColC = ExcelUtils.getNextColumn(bodyColB);
     Cell bodyColD = ExcelUtils.getNextColumn(bodyColC);
     for(ChannelModel channelModel:channelModels){
-    	
-    	if(channelModels.get(0) != channelModel){
-    		bodyColA = ExcelUtils.getNextRow(bodyColA);
-    		bodyColB = ExcelUtils.getNextRow(bodyColB);
-    		bodyColC = ExcelUtils.getNextRow(bodyColC);
-    		bodyColD = ExcelUtils.getNextRow(bodyColD);
-    	}
     	
     	bodyColA.setCellStyle(allBorder);
   		bodyColA.setCellValue(channelModel.getZoneId());
@@ -71,12 +65,18 @@ public class IvnAdvRptSitSub3Source implements ReportSource {
   		bodyColD.setCellValue(channelModel.getChShortName());
     	
     	ExcelUtils.createDummyColumn(bodyColD, allBorder, 36);
+    	if(channelModel != channelModels.get(channelModels.size()-1)){
+	    	bodyColA = ExcelUtils.getNextRow(bodyColA);
+	  		bodyColB = ExcelUtils.getNextRow(bodyColB);
+	  		bodyColC = ExcelUtils.getNextRow(bodyColC);
+	  		bodyColD = ExcelUtils.getNextRow(bodyColD);
+    	}
     }
     
 	}
 	
 	@Override
-	public void createFooter(Sheet sheet, String startExcelColumn,int startExcelRow, int... params){
+	public void createFooter(Sheet sheet, String startExcelColumn,int startExcelRow, ReportCriteria criteria, int... params){
 		CellStyle allBorderYellow = StyleUtils.allBorderYellow(sheet.getWorkbook().createCellStyle());
 		CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
 		

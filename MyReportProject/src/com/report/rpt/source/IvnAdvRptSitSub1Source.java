@@ -9,11 +9,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import com.report.dao.InvAdvRptSitDAO;
 import com.report.model.MastCarSeriesModel;
+import com.report.rpt.criteria.ReportCriteria;
 import com.report.util.ExcelUtils;
+import com.report.util.FormulasUtils;
 import com.report.util.StyleUtils;
 import com.report.util.Utils;
 
-public class IvnAdvRptSitSub1Source implements ReportSource {
+public class IvnAdvRptSitSub1Source extends IvnAdvRptSitCommonSource implements ReportSource {
 
 	@Override
 	public InvAdvRptSitDAO getDAOobject() {
@@ -21,7 +23,7 @@ public class IvnAdvRptSitSub1Source implements ReportSource {
 	}
 	
 	@Override
-	public void createHeader(Sheet sheet, String startExcelColumn,int startExcelRow){
+	public void createHeader(Sheet sheet, String startExcelColumn,int startExcelRow, ReportCriteria criteria){
 		CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
 		Cell dummyHeaderColD = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
 		dummyHeaderColD.setCellStyle(allBorder);
@@ -32,25 +34,25 @@ public class IvnAdvRptSitSub1Source implements ReportSource {
 	}
 	
 	@Override
-	public void createBody(Sheet sheet, String startExcelColumn,int startExcelRow){
+	public void createBody(Sheet sheet, String startExcelColumn,int startExcelRow, ReportCriteria criteria){
     List<MastCarSeriesModel> mastCarSeriesModels = getDAOobject().getSubReport1Data();
     CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
     
     Cell bodyColD = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
     for(MastCarSeriesModel mastCarSeriesModel:mastCarSeriesModels){
-    	
-    	if(mastCarSeriesModels.get(0) != mastCarSeriesModel){
-    		bodyColD = ExcelUtils.getNextRow(bodyColD);
-    	}
   		
     	bodyColD.setCellStyle(allBorder);
   		bodyColD.setCellValue(mastCarSeriesModel.getSeriesEname());
     	ExcelUtils.createDummyColumn(bodyColD, allBorder, 36);
+    	
+    	if(mastCarSeriesModel != mastCarSeriesModels.get(mastCarSeriesModels.size()-1)){
+    		bodyColD = ExcelUtils.getNextRow(bodyColD);
+    	}
     }
 	}
 	
 	@Override
-	public void createFooter(Sheet sheet, String startExcelColumn, int startExcelRow, int... params) {
+	public void createFooter(Sheet sheet, String startExcelColumn, int startExcelRow, ReportCriteria criteria, int... params) {
 		CellStyle allBorderYellow = StyleUtils.allBorderYellow(sheet.getWorkbook().createCellStyle());
 		
     Cell footerColD = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
@@ -60,9 +62,9 @@ public class IvnAdvRptSitSub1Source implements ReportSource {
     Cell footerColE = ExcelUtils.getNextColumn(footerColD);
     footerColE.setCellStyle(allBorderYellow);
     footerColE.setCellType(CellType.FORMULA);
-    footerColE.setCellFormula("SUM(E"+params[0]+":E"+(startExcelRow-1)+")");
+    //footerColE.setCellFormula("SUM(E"+params[0]+":E"+(startExcelRow-1)+")");
+    footerColE.setCellFormula(FormulasUtils.sum(footerColE, params[0], startExcelRow-1));
     ExcelUtils.createDummyColumn(footerColE, allBorderYellow, 35);
-    
 		//ExcelUtils.createDummyColumn(footerColD, allBorderYellow, 36);
 	}
 

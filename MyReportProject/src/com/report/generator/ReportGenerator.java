@@ -2,10 +2,12 @@ package com.report.generator;
 
 import org.apache.poi.ss.usermodel.Workbook;
 
+import com.report.rpt.criteria.ReportCriteria;
+
 /**
  * This Interface to define The structure of a ReportGenerator.<br>
  * All ReportGenerator need to implements this interface.<br>
- * *** When implements this interface need to add it in com.iars.constant.ReportType.
+ * *** When implements this interface need to add it in com.report.constant.ReportType.
  */
 public interface ReportGenerator {
 	
@@ -15,12 +17,12 @@ public interface ReportGenerator {
 	 * and get value by Utils.getProperties(variable in config.properties).
 	 * @return	path of report file
 	 */
-	public String getFilePath();
+	public String getFilePath(ReportCriteria reportCriteria);
 	
 	/**
 	 * This method always return Workbook.<br>
 	 * Workbook is contents to generate excel file.
 	 * @return	Workbook of Report
 	 */
-	public Workbook getWorkbook();
+	public Workbook getWorkbook(ReportCriteria reportCriteria);
 }

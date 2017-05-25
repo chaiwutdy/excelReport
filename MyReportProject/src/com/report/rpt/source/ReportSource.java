@@ -2,6 +2,8 @@ package com.report.rpt.source;
 
 import org.apache.poi.ss.usermodel.Sheet;
 
+import com.report.rpt.criteria.ReportCriteria;
+
 /**
  * This Interface to define The structure of a ReportSource.<br>
  * All ReportSource need to implements this interface.
@@ -11,7 +13,7 @@ public interface ReportSource {
 	/**
 	 * This method always return Object.<br>
 	 * To use it have to change return Object to DAO Object in dao Package.
-	 * @return	DAO Object in com.iars.dao Package
+	 * @return	DAO Object in com.report.dao Package
 	 */
 	public Object getDAOobject();
 	
@@ -23,7 +25,7 @@ public interface ReportSource {
 	 * @param		startExcelRow	This is the third parameter to specify the excel row where data starts.<br>
 	 * 					Exp. 1 or 2 or 3
 	 */
-	public void createHeader(Sheet sheet, String startExcelColumn, int startExcelRow);
+	public void createHeader(Sheet sheet, String startExcelColumn, int startExcelRow, ReportCriteria criteria);
 	
 	/**
 	 * This method for creating body.
@@ -33,7 +35,7 @@ public interface ReportSource {
 	 * @param		startExcelRow	This is the third parameter to specify the excel row where data starts.<br>
 	 * 					Exp. 1 or 2 or 3
 	 */
-	public void createBody(Sheet sheet, String startExcelColumn, int startExcelRow);
+	public void createBody(Sheet sheet, String startExcelColumn, int startExcelRow, ReportCriteria criteria);
 	
 	/**
 	 * This method for creating footer.<br>
@@ -54,5 +56,5 @@ public interface ReportSource {
 	 * @param		params	This is Optional Parameters.<br>
 	 * 					To get this parameters value like get value from array.<br>				
 	 */
-	public void createFooter(Sheet sheet, String startExcelColumn, int startExcelRow, int... params);
+	public void createFooter(Sheet sheet, String startExcelColumn, int startExcelRow, ReportCriteria criteria, int... params);
 }

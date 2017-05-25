@@ -5,8 +5,9 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import com.report.dao.DummyRptDAO;
-import com.report.util.DateUtils;
+import com.report.rpt.criteria.ReportCriteria;
 import com.report.util.ExcelUtils;
+import com.report.util.FormulasUtils;
 import com.report.util.StyleUtils;
 import com.report.util.Utils;
 
@@ -21,13 +22,13 @@ public class DummyRptSource implements ReportSource{
 	}
 
 	@Override
-	public void createHeader(Sheet sheet, String startExcelColumn,int startExcelRow) {
+	public void createHeader(Sheet sheet, String startExcelColumn,int startExcelRow, ReportCriteria criteria) {
 		Cell reportDate = ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
-    reportDate.setCellValue("DUMMY REPORT AS "+DateUtils.getCurrentDate("dd-MM-yyyy"));
+    reportDate.setCellValue("DUMMY REPORT AS "+criteria.getReportDate());
 	}
 
 	@Override
-	public void createBody(Sheet sheet, String startExcelColumn,int startExcelRow) {
+	public void createBody(Sheet sheet, String startExcelColumn,int startExcelRow, ReportCriteria criteria) {
 		String reportData = getDAOobject().getReportData();
 		CellStyle allBorder = StyleUtils.allBorder(sheet.getWorkbook().createCellStyle());
 		
@@ -77,12 +78,14 @@ public class DummyRptSource implements ReportSource{
 	}
 
 	@Override
-	public void createFooter(Sheet sheet, String startExcelColumn,int startExcelRow, int... params) {
-		Cell bodyColC =  ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
-		bodyColC.setCellValue("Total");
+	public void createFooter(Sheet sheet, String startExcelColumn,int startExcelRow, ReportCriteria criteria, int... params) {
+		Cell bodyColB =  ExcelUtils.getCell(startExcelColumn, startExcelRow, sheet);
+		bodyColB.setCellValue("Total");
 		
+		Cell bodyColC =  ExcelUtils.getNextColumn(bodyColB);
 		Cell bodyColD =  ExcelUtils.getNextColumn(bodyColC);
-		bodyColD.setCellFormula("SUM(D"+params[0]+":D"+(startExcelRow-1)+")");
+//		bodyColD.setCellFormula("SUM(D"+params[0]+":D"+(startExcelRow-1)+")");
+		bodyColD.setCellFormula(FormulasUtils.sum(bodyColD, params[0], startExcelRow-1));
 	}
 	
 }
