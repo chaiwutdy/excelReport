@@ -12,7 +12,6 @@ public class InvAdvRptSitDAOImpl extends JdbcDaoSupport implements InvAdvRptSitD
 
 	@Override
 	public List<MastCarSeriesModel> getSubReport1Data() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
